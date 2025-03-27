@@ -17,6 +17,7 @@ import emoji
 import gc
 import os
 from functools import lru_cache
+import nltk
 
 # Set up logging
 logging.basicConfig(level=logging.WARNING)
@@ -30,6 +31,17 @@ IN_DOCKER = os.environ.get('STREAMLIT_SERVER_HEADLESS', '') == 'true'
 # Memory-saving configuration for matplotlib
 plt.rcParams['figure.dpi'] = 80
 plt.rcParams['savefig.dpi'] = 80
+
+# Download NLTK data on Streamlit Cloud
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords')
 
 # Helper function to clean message text for display
 def clean_message_for_display(message_text):
