@@ -1,0 +1,15 @@
+streamlit>=1.22.0
+pandas>=1.5.0
+numpy>=1.23.0
+matplotlib>=3.5.0
+seaborn>=0.12.0
+plotly>=5.10.0
+nltk>=3.7
+wordcloud>=1.8.0
+emoji>=2.0.0
+regex>=2022.3.0
+urlextract>=1.8.0
+pillow>=9.0.0
+flask>=2.2.0
+pyinstaller>=5.0.0
+gunicorn>=20.1.0 
