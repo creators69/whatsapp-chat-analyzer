@@ -19,6 +19,34 @@ import os
 from functools import lru_cache
 import nltk
 
+# Set a specific directory for NLTK data (fix for Streamlit Cloud permission issues)
+nltk_data_dir = os.path.expanduser("~/nltk_data")
+if not os.path.exists(nltk_data_dir):
+    try:
+        os.makedirs(nltk_data_dir, exist_ok=True)
+    except:
+        nltk_data_dir = os.path.join(os.getcwd(), "nltk_data")
+        os.makedirs(nltk_data_dir, exist_ok=True)
+
+nltk.data.path.append(nltk_data_dir)
+
+# Download NLTK data on Streamlit Cloud
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    try:
+        nltk.download('punkt', download_dir=nltk_data_dir, quiet=True)
+    except:
+        st.warning("Unable to download NLTK punkt data. Some features may not work correctly.")
+
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    try:
+        nltk.download('stopwords', download_dir=nltk_data_dir, quiet=True)
+    except:
+        st.warning("Unable to download NLTK stopwords data. Some features may not work correctly.")
+
 # Set up logging
 logging.basicConfig(level=logging.WARNING)
 
@@ -31,17 +59,6 @@ IN_DOCKER = os.environ.get('STREAMLIT_SERVER_HEADLESS', '') == 'true'
 # Memory-saving configuration for matplotlib
 plt.rcParams['figure.dpi'] = 80
 plt.rcParams['savefig.dpi'] = 80
-
-# Download NLTK data on Streamlit Cloud
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt')
-
-try:
-    nltk.data.find('corpora/stopwords')
-except LookupError:
-    nltk.download('stopwords')
 
 # Helper function to clean message text for display
 def clean_message_for_display(message_text):
